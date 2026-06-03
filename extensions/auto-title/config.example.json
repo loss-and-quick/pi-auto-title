@@ -1,6 +1,6 @@
 {
   "enabled": true,
   "model": "current",
-  "fallbackModels": [],
+  "fallbackModels": ["current"],
   "maxChars": 60
 }

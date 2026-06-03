@@ -65,7 +65,7 @@ Example config:
 {
   "enabled": true,
   "model": "current",
-  "fallbackModels": [],
+  "fallbackModels": ["current"],
   "maxChars": 60
 }
 ```
@@ -85,7 +85,7 @@ Field semantics:
 
 - `enabled`: turn auto-title on/off
 - `model`: `"current"`, `"provider/model"`, `false`, or `null`
-- `fallbackModels`: ordered model fallback chain
+- `fallbackModels`: ordered model fallback chain; `"current"` is allowed here too
 - `maxChars`: title length cap
 
 ## Notes
