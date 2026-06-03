@@ -13,14 +13,46 @@ const SAVE_TYPE = "auto-title";
 const EXTENSION_NAME = "auto-title";
 const DEFAULT_MAX_CHARS = 60;
 const LOCAL_EXTENSION_DIR = path.dirname(fileURLToPath(import.meta.url));
-const TITLE_PROMPT = `You generate concise coding session titles.
-Return exactly one title and nothing else.
-Rules:
-- Use the same language as the user when obvious.
-- Keep technical terms, filenames, package names, and identifiers intact.
-- Prefer 3 to 7 words.
-- No quotes, bullets, markdown, emoji, or trailing punctuation.
-- Be specific, not generic.`;
+const TITLE_PROMPT = `You are a title generator. You output ONLY a session title. Nothing else.
+
+<task>
+Generate a brief title that would help the user find this conversation later.
+
+Follow all rules in <rules>.
+Use the <examples> so you know what a good title looks like.
+Your output must be:
+- A single line
+- Grammatically correct and natural
+- Within the requested character limit
+- No explanations
+</task>
+
+<rules>
+- You MUST use the same language as the user message you are summarizing when that language is clear.
+- Never include tool names.
+- Focus on the main topic or question the user needs to retrieve.
+- When a file is mentioned, focus on what the user wants to do with the file.
+- Keep exact technical terms, numbers, filenames, package names, and HTTP codes.
+- Remove filler like the, this, my, a, an when it improves the title.
+- Never assume a tech stack the user did not mention.
+- Never use words like summarizing, generating, or title generation.
+- Never respond to questions or explain your choice; output only the title.
+- Always output something meaningful, even if the input is minimal.
+- If the user message is short or conversational, create a title that reflects the tone or intent.
+</rules>
+
+<examples>
+"debug 500 errors in production" → Debugging production 500 errors
+"refactor user service" → Refactoring user service
+"why is app.js failing" → app.js failure investigation
+"implement rate limiting" → Rate limiting implementation
+"how do I connect postgres to my API" → Postgres API connection
+"best practices for React hooks" → React hooks best practices
+"@src/auth.ts can you add refresh token support" → Auth refresh token support
+"@utils/parser.ts this is broken" → Parser bug fix
+"look at @config.json" → Config review
+"@App.tsx add dark mode toggle" → Dark mode toggle in App
+</examples>`;
 
 type TitleSource = "llm" | "fallback" | "manual";
 type ModelSetting = "current" | string | false | null;
@@ -199,7 +231,7 @@ function buildSyntheticTitle(
 			.find(Boolean)
 			?.trim() ?? "";
 
-	let words = firstChunk.split(/\s+/).filter(Boolean).slice(0, 8);
+	const words = firstChunk.split(/\s+/).filter(Boolean).slice(0, 8);
 
 	const candidate = sanitizeTitle(words.join(" "), maxChars);
 	if (candidate) return candidate;

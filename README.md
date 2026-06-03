@@ -90,6 +90,7 @@ Field semantics:
 
 ## Notes
 
+- The title-generation prompt was adapted from an OpenCode-style title prompt and then tailored for this Pi extension.
 - Primary title generation uses a hidden in-process model call, based on the same pattern shown in Pi's `qna.ts` and `summarize.ts` extension examples.
 - `ctx.fork()` / `ctx.newSession()` are intentionally **not** used: in Pi extensions they replace the active session, which is the wrong behavior for hidden title generation.
 - If a session already has a title, the extension leaves it alone.
