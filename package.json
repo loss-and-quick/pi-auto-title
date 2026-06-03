@@ -1,0 +1,27 @@
+{
+  "name": "pi-auto-title",
+  "version": "0.1.0",
+  "description": "Pi package that auto-generates session titles with deterministic fallback.",
+  "type": "module",
+  "keywords": ["pi-package", "pi", "extension", "session-title"],
+  "files": ["extensions", "README.md"],
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
+  },
+  "scripts": {
+    "check": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "pi": {
+    "extensions": ["./extensions/auto-title/index.ts"]
+  }
+}
